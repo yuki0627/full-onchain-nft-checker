@@ -1,5 +1,18 @@
-(function () {
+function main() {
+    console.log("hoge1");
+    const MESSAGE_ID = "my-extension-message"; // メッセージのIDを定義
+    // メッセージがすでに存在する場合は削除する
+    const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
+    if (existingMessage) {
+        console.log("hoge2");
+        existingMessage.remove();
+    }
+    // 現在のURLをチェック
+    if (!window.location.href.match(/https:\/\/opensea\.io\/collection\/.+/)) {
+        return;
+    }
     const message = document.createElement("div");
+    message.id = MESSAGE_ID; // メッセージにIDを付ける
     message.style.position = "fixed";
     message.style.top = "0px";
     message.style.left = "0px";
@@ -31,5 +44,18 @@
     message.textContent = randomPattern.textContent;
   
     document.body.appendChild(message);
-  })();
-  
+    console.log("hoge3");
+}
+
+let previousUrl = '';
+
+function checkForUrlChange() {
+  const currentUrl = window.location.href;
+  if (previousUrl !== currentUrl) {
+    previousUrl = currentUrl;
+    main();
+  }
+  setTimeout(checkForUrlChange, 1000); // 1000ms = 1s
+}
+
+checkForUrlChange();
