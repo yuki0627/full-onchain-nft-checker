@@ -1,10 +1,50 @@
 function main() {
-    console.log("hoge1");
+    function getCollectionNameByUrl() {
+        const url = window.location.href;
+        const collectionNameRegex = /https:\/\/opensea\.io\/collection\/([\w-]+)/;
+        const match = url.match(collectionNameRegex);
+      
+        if (match) {
+          return match[1];
+        } else {
+          return null;
+        }
+    }
+    
+    function addOverlayText(element, messageText) {
+        const message = document.createElement('div');
+        message.textContent = messageText;
+        message.style.position = 'absolute';
+        message.style.top = '0';
+        message.style.right = '0';
+        message.style.padding = '2px 5px';
+        message.style.backgroundColor = 'red';
+        message.style.color = 'white';
+        message.style.fontSize = '12px';
+        message.style.fontWeight = 'bold';
+        message.style.zIndex = '1000';
+        element.appendChild(message);
+    }
+    
+    function applyOverlayTexts() {
+        const anchorTags = document.querySelectorAll('a[role="row"]');
+    
+        anchorTags.forEach((anchor) => {
+          const imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
+    
+          if (imageContainer) {
+            const result = discriminate("hoge");
+            addOverlayText(imageContainer, result.textContent);
+          }
+        });
+      }
+    
+    applyOverlayTexts();
+    
     const MESSAGE_ID = "my-extension-message"; // メッセージのIDを定義
     // メッセージがすでに存在する場合は削除する
     const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
     if (existingMessage) {
-        console.log("hoge2");
         existingMessage.remove();
     }
     // 現在のURLをチェック
@@ -24,40 +64,24 @@ function main() {
     message.style.border = "1px solid gray";
     message.style.fontSize = "12px";
   
-    // パターンを配列に格納
-    const patterns = [
-      { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
-      { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
-      { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#FFCE75", textContent: "OffChain" },
-      { backgroundColor: "#D3D3D3", textContent: "UnKnown" },
-    ];
-  
-    // ランダムにパターンを選択
-    const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
-  
-    // ランダムに選択されたパターンを適用
-    message.style.backgroundColor = randomPattern.backgroundColor;
-    message.textContent = randomPattern.textContent;
-  
+    const collectionName = getCollectionNameByUrl();
+    const result = discriminate(collectionName);
+    console.log('collectionName:', collectionName);
+    message.style.backgroundColor = result.backgroundColor;
+    message.textContent = result.textContent;
+
     document.body.appendChild(message);
-    console.log("hoge3");
 }
 
 let previousUrl = '';
 
 function checkForUrlChange() {
-  const currentUrl = window.location.href;
-  if (previousUrl !== currentUrl) {
-    previousUrl = currentUrl;
-    main();
-  }
-  setTimeout(checkForUrlChange, 1000); // 1000ms = 1s
+    const currentUrl = window.location.href;
+    if (previousUrl !== currentUrl) {
+        previousUrl = currentUrl;
+        main();
+    }
+    setTimeout(checkForUrlChange, 1000); // 1000ms = 1s
 }
 
 checkForUrlChange();

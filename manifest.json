@@ -20,7 +20,7 @@
     "content_scripts": [
       {
         "matches": ["*://opensea.io/*"],
-        "js": ["content.js"]
+        "js": ["discriminate.js", "content.js"]
       }
     ],
     "permissions": ["activeTab", "scripting", "storage"]
