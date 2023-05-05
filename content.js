@@ -1,46 +1,49 @@
-function main() {
-    function getCollectionNameByUrl() {
-        const url = window.location.href;
-        const collectionNameRegex = /https:\/\/opensea\.io\/collection\/([\w-]+)/;
-        const match = url.match(collectionNameRegex);
-      
-        if (match) {
-          return match[1];
-        } else {
-          return null;
-        }
+function getCollectionNameByUrl() {
+    const url = window.location.href;
+    const collectionNameRegex = /https:\/\/opensea\.io\/collection\/([\w-]+)/;
+    const match = url.match(collectionNameRegex);
+  
+    if (match) {
+      return match[1];
+    } else {
+      return null;
     }
-    
-    function addOverlayText(element, messageText) {
-        const message = document.createElement('div');
-        message.textContent = messageText;
-        message.style.position = 'absolute';
-        message.style.top = '0';
-        message.style.right = '0';
-        message.style.padding = '2px 5px';
-        message.style.backgroundColor = 'red';
-        message.style.color = 'white';
-        message.style.fontSize = '12px';
-        message.style.fontWeight = 'bold';
-        message.style.zIndex = '1000';
-        element.appendChild(message);
-    }
-    
-    function applyOverlayTexts() {
-        const anchorTags = document.querySelectorAll('a[role="row"]');
-    
-        anchorTags.forEach((anchor) => {
-          const imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
-    
-          if (imageContainer) {
+}
+
+function addOverlayText(collectionItem, result) {
+    const overlayText = document.createElement("div");
+
+    // スタイルを適用
+    overlayText.style.backgroundColor = result.backgroundColor;
+    overlayText.style.color = "white";
+    overlayText.style.fontWeight = "bold";
+    overlayText.style.borderRadius = "5px"; // 角丸にする
+    overlayText.style.padding = "5px 10px";
+    overlayText.style.position = "absolute";
+    overlayText.style.zIndex = "2";
+    overlayText.style.top = "0px"; // 画像の上部に配置
+    overlayText.style.left = "0px";
+  
+    overlayText.textContent = result.textContent;
+  
+    collectionItem.appendChild(overlayText);
+}
+
+function applyOverlayTexts() {
+    console.log('applyOverlayTexts:');
+    const anchorTags = document.querySelectorAll('a[role="row"]');
+
+    anchorTags.forEach((anchor) => {
+        const imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
+
+        if (imageContainer) {
             const result = discriminate("hoge");
-            addOverlayText(imageContainer, result.textContent);
-          }
-        });
-      }
-    
-    applyOverlayTexts();
-    
+            addOverlayText(imageContainer, result);
+        }
+    });
+}
+
+function main() {
     const MESSAGE_ID = "my-extension-message"; // メッセージのIDを定義
     // メッセージがすでに存在する場合は削除する
     const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
@@ -76,6 +79,7 @@ function main() {
 let previousUrl = '';
 
 function checkForUrlChange() {
+    applyOverlayTexts();
     const currentUrl = window.location.href;
     if (previousUrl !== currentUrl) {
         previousUrl = currentUrl;
