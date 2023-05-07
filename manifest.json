@@ -17,11 +17,14 @@
         "description": "Run extension."
       }
     },
+    "background": {
+      "service_worker": "background.js"
+    },
     "content_scripts": [
       {
-        "matches": ["*://opensea.io/*"],
-        "js": ["discriminate.js", "content.js"]
+        "matches": ["https://opensea.io/*", "https://*.opensea.io/*"],
+        "js": ["discriminate.js", "content.js", "collection_page.js", "other_page.js"]
       }
     ],
-    "permissions": ["activeTab", "scripting", "storage"]
-  }
+    "permissions": ["activeTab", "scripting", "storage", "tabs"]
+}
