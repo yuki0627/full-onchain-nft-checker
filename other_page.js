@@ -32,7 +32,10 @@ function applyOverlayTexts() {
         const imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
 
         if (imageContainer) {
-            const result = discriminate("hoge");
+            // コレクション名を取得
+            const collectionName = anchor.href.split('/').pop();
+            console.log('collectionName:', collectionName);
+            const result = discriminate(collectionName);
             addOverlayText(imageContainer, result);
         }
     });
