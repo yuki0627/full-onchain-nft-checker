@@ -17,8 +17,15 @@ function addOverlayText(collectionItem, result) {
     collectionItem.appendChild(overlayText);
 }
 
-function other_page_main() {
-    console.log('applyOverlayTexts:');
+function applyOverlayTexts() {
+    console.log('applyOverlayTexts start');
+    // すでにラベルが表示されているかチェック
+    const existingLabel = document.querySelector('.my-extension-label');
+    if (existingLabel) {
+        console.log('applyOverlayTexts end');
+        return; // ラベルが表示されている場合、処理をスキップ
+    }
+
     const anchorTags = document.querySelectorAll('a[role="row"]');
 
     anchorTags.forEach((anchor) => {
@@ -29,4 +36,12 @@ function other_page_main() {
             addOverlayText(imageContainer, result);
         }
     });
+    console.log('applyOverlayTexts end');
 }
+
+function other_page_main() {
+    // 1秒ごとにapplyOverlayTexts関数を実行
+    setInterval(applyOverlayTexts, 1000);
+}
+
+
