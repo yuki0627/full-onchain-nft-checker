@@ -1,3 +1,15 @@
+function getImageContainer(anchor) {
+    // 既存の画像コンテナセレクタ
+    let imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
+
+    // 新たな画像コンテナセレクタ
+    if (!imageContainer) {
+        imageContainer = anchor.querySelector('.sc-f643b422-1');
+    }
+
+    return imageContainer;
+}
+
 function addOverlayText(collectionItem, result) {
     const overlayText = document.createElement("div");
 
@@ -26,10 +38,10 @@ function applyOverlayTexts() {
         return; // ラベルが表示されている場合、処理をスキップ
     }
 
-    const anchorTags = document.querySelectorAll('a[role="row"]');
+    const anchorTags = document.querySelectorAll('a[role="row"], a[href*="/collection/"]');
 
     anchorTags.forEach((anchor) => {
-        const imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
+        const imageContainer = getImageContainer(anchor);
 
         if (imageContainer) {
             // コレクション名を取得
@@ -41,6 +53,7 @@ function applyOverlayTexts() {
     });
     console.log('applyOverlayTexts end');
 }
+
 
 function other_page_main() {
     // 1秒ごとにapplyOverlayTexts関数を実行
