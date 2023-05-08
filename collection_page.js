@@ -1,10 +1,4 @@
 function collection_page_main() {
-    const MESSAGE_ID = "my-extension-message"; // メッセージのIDを定義
-    // メッセージがすでに存在する場合は削除する
-    const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
-    if (existingMessage) {
-        existingMessage.remove();
-    }
     // 現在のURLをチェック
     if (!window.location.href.match(/https:\/\/opensea\.io\/(\w+\/)?collection\/.+/)) {
       return;

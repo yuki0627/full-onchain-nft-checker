@@ -1,3 +1,5 @@
+const MESSAGE_ID = "my-extension-message";
+
 function getCollectionNameByUrl() {
     const url = window.location.href;
     const collectionNameRegex = /https:\/\/opensea\.io\/collection\/([\w-]+)/;
@@ -9,6 +11,14 @@ function getCollectionNameByUrl() {
       return null;
     }
 }
+
+function removeOverlayText() {
+  const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+}
+
 
 let previousUrl = '';
 
@@ -25,7 +35,7 @@ function checkForUrlChange() {
 
         console.log('isCollectionPage:', isCollectionPage);
         console.log('isDomain:', isDomain);
-        
+        removeOverlayText();
         if (isCollectionPage) {
             collection_page_main();
         } else if (isDomain) {
