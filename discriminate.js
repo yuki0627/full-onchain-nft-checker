@@ -10,16 +10,21 @@ function hashString(str) {
 
 function discriminate(name) {
     // この部分に判別ロジックを記述し、適切なパターンを返します。
-    // 例：
-    // if (条件) {
-    //   return { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" };
-    // } else {
-    //   return { backgroundColor: "#FFCE75", textContent: "OffChain" };
-    // }
-  
+
     // 仮のロジック
     const hashedValue = hashString(name);
-    const group = Math.abs(hashedValue % 3); // 0, 1, 2のいずれかに分類
+    const ratio = Math.abs(hashedValue % 1000) / 1000; // 0～1の値に変換
+
+    // 割合に基づいてグループを割り当て
+    let group;
+    if (ratio < 0.02) {
+        group = 0;
+    } else if (ratio < 0.02 + 0.9) {
+        group = 1;
+    } else {
+        group = 2;
+    }
+
     const patterns = [
         { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
         { backgroundColor: "#FFCE75", textContent: "OffChain" },
