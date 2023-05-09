@@ -19,7 +19,7 @@
     },
     "content_scripts": [
       {
-        "matches": ["*://opensea.io/*"],
+        "matches": ["*://opensea.io/*", "*://testnets.opensea.io/*"],
         "js": ["discriminate.js", "other_page.js", "collection_page.js", "content.js"]
       }
     ],

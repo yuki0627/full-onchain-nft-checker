@@ -1,6 +1,9 @@
+// const collectionPageRegex = /https:\/\/(?:testnets\.)?opensea\.io\/(\w+\/)?collection\/.+/;
+const collectionPageRegex = /https:\/\/(?:testnets\.)?opensea\.io(\/[a-z]{2})?\/collection\/([\w-]+)/;
+
 function collection_page_main() {
     // 現在のURLをチェック
-    if (!window.location.href.match(/https:\/\/opensea\.io\/(\w+\/)?collection\/.+/)) {
+    if (!window.location.href.match(collectionPageRegex)) {
       return;
     }
 

@@ -1,8 +1,11 @@
 const MESSAGE_ID = "my-extension-message";
 
+const collectionNameRegex = /https:\/\/(?:testnets\.)?opensea\.io\/collection\/([\w-]+)/;
+// const collectionPageRegex = /https:\/\/(?:testnets\.)?opensea\.io(\/[a-z]{2})?\/collection\/([\w-]+)/;
+const domainRegex = /^https:\/\/(?:testnets\.)?opensea\.io(\/[a-z]{2})?\//;
+
 function getCollectionNameByUrl() {
     const url = window.location.href;
-    const collectionNameRegex = /https:\/\/opensea\.io\/collection\/([\w-]+)/;
     const match = url.match(collectionNameRegex);
   
     if (match) {
@@ -19,11 +22,7 @@ function removeOverlayText() {
   }
 }
 
-
 let previousUrl = '';
-
-const collectionPageRegex = /https:\/\/opensea\.io(\/[a-z]{2})?\/collection\/([\w-]+)/;
-const domainRegex = /^https:\/\/opensea\.io(\/[a-z]{2})?\//;
 
 function checkForUrlChange() {
     const currentUrl = window.location.href;
@@ -46,4 +45,3 @@ function checkForUrlChange() {
 }
 
 checkForUrlChange();
-
