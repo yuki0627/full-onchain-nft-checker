@@ -17,9 +17,9 @@ function discriminate(name) {
 
     // 割合に基づいてグループを割り当て
     let group;
-    if (ratio < 0.02) {
+    if (ratio < 0.2) {
         group = 0;
-    } else if (ratio < 0.02 + 0.9) {
+    } else if (ratio < 0.2 + 0.5) {
         group = 1;
     } else {
         group = 2;
