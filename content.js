@@ -9,17 +9,17 @@ function getCollectionNameByUrl() {
     const match = url.match(collectionNameRegex);
   
     if (match) {
-      return match[1];
+        return match[1];
     } else {
-      return null;
+        return null;
     }
 }
 
 function removeOverlayText() {
-  const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
-  if (existingMessage) {
-    existingMessage.remove();
-  }
+    const existingMessage = document.querySelector(`#${MESSAGE_ID}`);
+    if (existingMessage) {
+        existingMessage.remove();
+    }
 }
 
 let previousUrl = '';
@@ -38,7 +38,7 @@ function checkForUrlChange() {
         if (isCollectionPage) {
             collection_page_main();
         } else if (isDomain) {
-            other_page_main();
+            // other_page_main();
         }
     }
     setTimeout(checkForUrlChange, 1000); // 1000ms = 1s

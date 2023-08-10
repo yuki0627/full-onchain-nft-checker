@@ -1,35 +1,55 @@
-function hashString(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = (hash << 5) - hash + char;
-        hash |= 0; // Convert to 32bit integer
+async function fetchAPIInfo(collectionName) {
+    console.log('fetchAPIInfo開始:', collectionName);
+    console.log('APIへのリクエストを開始');
+    
+    try {
+        let response = await fetch('https://get-info-s6onvehw4a-uc.a.run.app', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                collection_slug: collectionName
+            })
+        });
+        
+        console.log('APIからのレスポンス:', response);
+        
+        let data = await response.json();
+        console.log('APIからのデータ:', data);
+
+        // TODO: data から必要な情報を取得して返す
+        return data; 
+    } catch (error) {
+        console.error('APIからのエラー:', error);
+        throw error;
     }
-    return hash;
 }
 
-function discriminate(name) {
-    // この部分に判別ロジックを記述し、適切なパターンを返します。
+let obj = {};
 
-    // 仮のロジック
-    const hashedValue = hashString(name);
-    const ratio = Math.abs(hashedValue % 1000) / 1000; // 0～1の値に変換
-
-    // 割合に基づいてグループを割り当て
-    let group;
-    if (ratio < 0.2) {
-        group = 0;
-    } else if (ratio < 0.2 + 0.5) {
-        group = 1;
+async function discriminate(name) {
+    let type = 0; 
+    if (name in obj) {
+        type = obj[name];
     } else {
-        group = 2;
+        try {
+            let info = await fetchAPIInfo(name);
+            console.log('info:', info);
+            
+            type = info["type"];
+            obj[name] = type;
+        } catch (error) {
+            console.error('Error fetching API info:', error);
+            // Handle error appropriately
+        }
     }
 
     const patterns = [
+        { backgroundColor: "#D3D3D3", textContent: "UnKnown" },
         { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
         { backgroundColor: "#FFCE75", textContent: "OffChain" },
-        { backgroundColor: "#D3D3D3", textContent: "UnKnown" },
     ];
   
-    return patterns[group];
+    return patterns[type];
 }

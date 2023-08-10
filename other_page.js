@@ -1,8 +1,7 @@
 function getImageContainer(anchor) {
-    // 既存の画像コンテナセレクタ
+    // 画像コンテナセレクタ
     let imageContainer = anchor.querySelector('div[style*="height: 72px; width: 72px;"]');
 
-    // 新たな画像コンテナセレクタ
     if (!imageContainer) {
         imageContainer = anchor.querySelector('.sc-f643b422-1');
     }
@@ -10,11 +9,10 @@ function getImageContainer(anchor) {
     return imageContainer;
 }
 
-function addOverlayText(collectionItem, result) {
+function addOverlayText(collectionItem, anchor) {
     const overlayText = document.createElement("div");
 
     // スタイルを適用
-    overlayText.style.backgroundColor = result.backgroundColor;
     overlayText.style.color = "white";
     overlayText.style.fontWeight = "bold";
     overlayText.style.borderRadius = "5px"; // 角丸にする
@@ -23,32 +21,33 @@ function addOverlayText(collectionItem, result) {
     overlayText.style.zIndex = "2";
     overlayText.style.top = "0px"; // 画像の上部に配置
     overlayText.style.left = "0px";
-  
+
+    // 初期のメッセージを設定
+    overlayText.style.backgroundColor = "#D3D3D3"; // グレー背景
+    overlayText.textContent = "analyzing...";
+    collectionItem.appendChild(overlayText);
+
+    
+    const collectionName = anchor.href.split('/').pop();
+    const result = discriminate(collectionName);
+    overlayText.style.backgroundColor = result.backgroundColor;
     overlayText.textContent = result.textContent;
-  
     collectionItem.appendChild(overlayText);
 }
 
 function applyOverlayTexts() {
-    console.log('applyOverlayTexts start');
     // すでにラベルが表示されているかチェック
     const existingLabel = document.querySelector('.my-extension-label');
     if (existingLabel) {
-        console.log('applyOverlayTexts end');
         return; // ラベルが表示されている場合、処理をスキップ
     }
 
     const anchorTags = document.querySelectorAll('a[role="row"], a[href*="/collection/"]');
-
     anchorTags.forEach((anchor) => {
         const imageContainer = getImageContainer(anchor);
 
         if (imageContainer) {
-            // コレクション名を取得
-            const collectionName = anchor.href.split('/').pop();
-            console.log('collectionName:', collectionName);
-            const result = discriminate(collectionName);
-            addOverlayText(imageContainer, result);
+            addOverlayText(imageContainer, anchor);
         }
     });
     console.log('applyOverlayTexts end');
@@ -57,7 +56,6 @@ function applyOverlayTexts() {
 
 function other_page_main() {
     // 1秒ごとにapplyOverlayTexts関数を実行
-    setInterval(applyOverlayTexts, 1000);
+    // setInterval(applyOverlayTexts, 1000);
 }
-
 

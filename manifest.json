@@ -23,5 +23,8 @@
         "js": ["discriminate.js", "other_page.js", "collection_page.js", "content.js"]
       }
     ],
-    "permissions": ["activeTab", "scripting", "storage"]
+    "permissions": ["activeTab", "scripting", "storage"],
+    "host_permissions": [
+      "https://get-info-s6onvehw4a-uc.a.run.app/"
+    ]
   }
