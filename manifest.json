@@ -1,6 +1,6 @@
 {
-    "name": "(Prototype)Full-Onchain NFT Checker",
-    "description": "Full-Onchain NFT Checker Prototype",
+    "name": "Full-Onchain NFT Checker",
+    "description": "Full-Onchain NFT Checker",
     "version": "1.0",
     "manifest_version": 3,    
     "options_page": "options.html",
@@ -23,7 +23,6 @@
         "js": ["discriminate.js", "other_page.js", "collection_page.js", "item_page.js", "content.js"]
       }
     ],
-    "permissions": ["activeTab", "scripting", "storage"],
     "host_permissions": [
       "https://get-info-s6onvehw4a-uc.a.run.app/"
     ]
