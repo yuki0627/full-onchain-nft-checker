@@ -30,7 +30,3 @@ This extension is powered by our backend API which determines the NFT storage ty
 ## Feedback and Contributions
 
 We appreciate feedback and contributions to improve the extension. Please raise an issue or submit a pull request on our [GitHub repository](https://github.com/yuki0627/full-onchain-nft-checker).
-
-## License
-
-[MIT](LICENSE) © [Your Name/Company]
