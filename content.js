@@ -1,12 +1,24 @@
 const MESSAGE_ID = "my-extension-message";
 
 const collectionNameRegex = /https:\/\/(?:testnets\.)?opensea\.io\/collection\/([\w-]+)/;
-// const collectionPageRegex = /https:\/\/(?:testnets\.)?opensea\.io(\/[a-z]{2})?\/collection\/([\w-]+)/;
 const domainRegex = /^https:\/\/(?:testnets\.)?opensea\.io(\/[a-z]{2})?\//;
+const itemPageRegex = /https:\/\/(?:testnets\.)?opensea\.io\/assets\/ethereum\/(0x[a-fA-F0-9]{40})\/(\d+)/;
+
 
 function getCollectionNameByUrl() {
     const url = window.location.href;
     const match = url.match(collectionNameRegex);
+  
+    if (match) {
+        return match[1];
+    } else {
+        return null;
+    }
+}
+
+function getContractAddressByUrl() {
+    const url = window.location.href;
+    const match = url.match(itemPageRegex);
   
     if (match) {
         return match[1];
@@ -30,6 +42,7 @@ function checkForUrlChange() {
         previousUrl = currentUrl;
         
         const isCollectionPage = Boolean(currentUrl.match(collectionPageRegex));
+        const isItemPage = Boolean(currentUrl.match(itemPageRegex));
         const isDomain = !isCollectionPage && Boolean(currentUrl.match(domainRegex));
 
         console.log('isCollectionPage:', isCollectionPage);
@@ -37,6 +50,9 @@ function checkForUrlChange() {
         removeOverlayText();
         if (isCollectionPage) {
             collection_page_main();
+        }
+        else if (isItemPage) {
+            item_page_main();
         } else if (isDomain) {
             // other_page_main();
         }

@@ -1,5 +1,5 @@
-async function fetchAPIInfo(collectionName) {
-    console.log('fetchAPIInfo開始:', collectionName);
+async function fetchNFTInfo({ collectionName = null, contractAddress = null }) {
+    console.log('fetchNFTInfo:', collectionName);
     console.log('APIへのリクエストを開始');
     
     try {
@@ -9,7 +9,8 @@ async function fetchAPIInfo(collectionName) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                collection_slug: collectionName
+                collection_slug: collectionName,
+                contract_address: contractAddress
             })
         });
         
@@ -17,8 +18,6 @@ async function fetchAPIInfo(collectionName) {
         
         let data = await response.json();
         console.log('APIからのデータ:', data);
-
-        // TODO: data から必要な情報を取得して返す
         return data; 
     } catch (error) {
         console.error('APIからのエラー:', error);
@@ -26,19 +25,36 @@ async function fetchAPIInfo(collectionName) {
     }
 }
 
-let obj = {};
+let obj = [];
 
-async function discriminate(name) {
-    let type = 0; 
-    if (name in obj) {
-        type = obj[name];
+async function discriminate({ collectionName = null, contractAddress = null }) {
+    if (!collectionName && !contractAddress) {
+        throw new Error("Either collectionName or contractAddress must be provided!");
+    }
+
+    let type = 0; // Default to Unknown
+
+    // objを検索して、該当するエントリを見つける
+    let entry = obj.find(item => 
+        (collectionName && item.collectionName === collectionName) || 
+        (contractAddress && item.contractAddress === contractAddress)
+    );
+
+    if (entry) {
+        type = entry.type;
     } else {
         try {
-            let info = await fetchAPIInfo(name);
+            let info;
+            info = await fetchNFTInfo({collectionName: collectionName, contractAddress: contractAddress}); 
+
             console.log('info:', info);
-            
             type = info["type"];
-            obj[name] = type;
+
+            obj.push({
+                collectionName: collectionName || info.collectionName,
+                contractAddress: contractAddress || info.contractAddress,
+                type: type
+            });
         } catch (error) {
             console.error('Error fetching API info:', error);
             // Handle error appropriately
@@ -50,6 +66,7 @@ async function discriminate(name) {
         { backgroundColor: "#4AAB8C", textContent: "FullOnChain!" },
         { backgroundColor: "#FFCE75", textContent: "OffChain" },
     ];
-  
+
     return patterns[type];
 }
+

@@ -29,7 +29,7 @@ function addOverlayText(collectionItem, anchor) {
 
     
     const collectionName = anchor.href.split('/').pop();
-    const result = discriminate(collectionName);
+    const result = discriminate({collectionName: collectionName});
     overlayText.style.backgroundColor = result.backgroundColor;
     overlayText.textContent = result.textContent;
     collectionItem.appendChild(overlayText);
