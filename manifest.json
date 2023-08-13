@@ -3,19 +3,8 @@
     "description": "Full-Onchain NFT Checker",
     "version": "1.0",
     "manifest_version": 3,    
-    "options_page": "options.html",
     "action": {
-      "default_popup": "popup.html",
-      "default_icon": "my-extension.png"
-    },
-    "commands": {
-      "_execute_action": {
-        "suggested_key": {
-          "default": "Ctrl+Shift+H",
-          "mac": "MacCtrl+Shift+H"
-        },
-        "description": "Run extension."
-      }
+      "default_icon": "full-Onchain-NFT-Checker.png"
     },
     "content_scripts": [
       {
